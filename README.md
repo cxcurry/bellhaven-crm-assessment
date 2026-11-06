@@ -12,7 +12,7 @@ Set `BELLHAVEN_TOKEN` in the server environment to your own assessment token. Wi
 4. Commence opens a confirmation dialog containing executable approved changes and every excluded unresolved record. A checkbox and the final Yes are required before writes.
 5. Execution checks current CRM state before each write, verifies each result, and journals progress. Revenue plus unpaid AR triggers a new account and CHOW linkage while preserving the old account. Failed or uncertain creation requests require investigation, never blind retry.
 
-Changing evidence invalidates approval. Ambiguous, missing and unlisted records cannot be approved for automatic writes without a supported exact plan. Refresh does not automatically resolve uncertainty or invent ownership evidence. The application currently supports name and ownership corrections; duplicate survivor selection and manual field-correction plans remain operator investigations.
+Changing evidence invalidates approval. Ambiguous, missing and unlisted records cannot be approved for automatic writes without a supported exact plan. Refresh does not automatically resolve uncertainty or invent ownership evidence. The main queue supports name and ownership corrections. The investigated resolution review additionally executes explicit, human-approved duplicate, address, creation, and Needs Review plans; it does not invent those plans from uncertain matches.
 
 Tests: `npm test`. All remote write behavior is tested against mocks, not by making extra CRM changes.
 
@@ -38,3 +38,12 @@ See DAILY-SCHEDULE.md for a daily read-only scan configuration. It has not been 
 
 
 From the repository root: `npm start`, `npm test`. The current platform is in platform/.
+
+
+## Treatment of unlisted facilities
+
+Bellhaven Care Center of Alliance, Bellhaven of Coldwater, and Bellhaven of Sandusky are absent from the supplied current Bellhaven website. The approved disposition is `Needs Review`, with an explanatory CRM note. Their existing parents, contacts, financial balances, and ownership links are preserved; absence alone does not establish closure or a new owner.
+
+This is a fictional assessment. Real-world businesses found at similar addresses are not evidence that the sandbox accounts should be renamed or re-parented. Use the supplied website and sandbox evidence, and explicitly document unresolved ownership rather than inventing a correction.
+
+After successful resolution execution, the application returns to the main workspace with a timestamped verification receipt. A failed operation keeps the reviewer on the resolution page with the issue exposed.
