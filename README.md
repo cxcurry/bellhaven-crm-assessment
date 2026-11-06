@@ -40,4 +40,3 @@ Never commit candidate tokens, `.env`, welcome-page HTML, private notes, change 
 ## Validation
 
 JavaScript syntax checks and a dashboard rendering smoke check were run before packaging. Eight previously approved CRM operations were applied and read back during the assessment; that does not certify all unresolved records or complete end-to-end automation.
-

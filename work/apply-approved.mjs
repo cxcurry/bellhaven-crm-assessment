@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+const root=new URL('../outputs/',import.meta.url),plan=JSON.parse(fs.readFileSync(new URL('Approved-change-plan.json',root))),token=fs.readFileSync(new URL('.env',import.meta.url),'utf8').trim().split('=')[1],base='https://analyst-assessment-production.up.railway.app/api/v1';
+const logPath=new URL('CRM-execution-audit.json',root);let audit=fs.existsSync(logPath)?JSON.parse(fs.readFileSync(logPath)):[];
+async function api(path,method='GET',body){let r=await fetch(base+path,{method,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});let text=await r.text();if(!r.ok)throw Error(`${method} ${path}: ${r.status} ${text}`);return JSON.parse(text)}
+function save(){fs.writeFileSync(logPath,JSON.stringify(audit,null,2))}const unwrap=x=>x.data||x;
+for(const p of plan.sort((a,b)=>Number(b.facility.includes('Grove City'))-Number(a.facility.includes('Grove City')))){
+ if(audit.some(x=>x.account_id===p.account_id&&x.verified))continue;
+ let old=unwrap(await api('/accounts/'+p.account_id));for(const [k,v] of Object.entries(p.before))if(old[k]!==v)throw Error('CRM changed since review: '+p.facility+' '+k);
+ let entry={facility:p.facility,account_id:p.account_id,before:old,startedAt:new Date().toISOString()};audit.push(entry);save();
+ if(p.operation==='patch'){await api('/accounts/'+p.account_id,'PATCH',p.proposed);let after=unwrap(await api('/accounts/'+p.account_id));for(const [k,v] of Object.entries(p.proposed))if(after[k]!==v)throw Error('Verification failed '+k);entry.after=after;}
+ else {if(old.chow_current_account)throw Error('Existing CHOW requires review');let existing=entry.newAccount;let created=unwrap(await api('/accounts','POST',p.proposed.newAccount));entry.newAccount=created;save();let id=created.account_id;if(!id)throw Error('Missing created ID; stop before retry');await api('/accounts/'+p.account_id,'PATCH',{chow_current_account:id});let after=unwrap(await api('/accounts/'+p.account_id));for(const k of Object.keys(old).filter(k=>!['chow_current_account','updated_at'].includes(k)))if(JSON.stringify(after[k])!==JSON.stringify(old[k]))throw Error('Old account unexpectedly changed '+k);if(after.chow_current_account!==id)throw Error('CHOW verification failed');let current=unwrap(await api('/accounts/'+id));for(const [k,v]of Object.entries(p.proposed.newAccount))if(current[k]!==v)throw Error('New account mismatch '+k);entry.after=after;entry.newAccount=current;}
+ entry.verified=true;entry.completedAt=new Date().toISOString();save();console.log('Verified: '+p.facility);
+}

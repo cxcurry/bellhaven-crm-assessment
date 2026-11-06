@@ -1,0 +1,9 @@
+.env
+work/.env
+node_modules/
+work/*.json
+work/source-*.html
+work/requirements*
+outputs/*audit*
+outputs/*decisions*
+outputs/*plan*
