@@ -1,42 +1,23 @@
-# Bellhaven CRM Assessment
+# COTYE° Bellhaven Workspace
 
-A local review dashboard and Node.js pipeline for comparing Bellhaven community listings with CRM accounts. Built with AI assistance and human approval of corrections.
+Minimal local CRM review application. Requires Node.js 24 or newer. Uses only built-in Node modules; no dependency installation is needed.
 
-## Run locally
+Run `npm start` in this folder, then open http://127.0.0.1:8767.
 
-Requires Node.js 24 or newer. No third-party packages are required.
+Set `BELLHAVEN_TOKEN` in the server environment to your own assessment token. Within the original project, the existing `work/.env` is supported. Each token has isolated saved decisions. Tokens never enter browser responses or source control. The server binds only to the local computer; this is not a hosted multi-user service.
 
-```sh
-npm start
-```
+1. Refresh verification evidence: fetches all website locations and current CRM accounts. This does not write to CRM.
+2. Review individual evidence and exact proposed changes. Save notes or select a decision. Prior decisions and notes remain visible in review history.
+3. Bulk approval approves only exact-name, full normalized-address and correct-parent matches. Explicit rejections and flagged decisions are not overridden. Other records stay first.
+4. Commence opens a confirmation dialog containing executable approved changes and every excluded unresolved record. A checkbox and the final Yes are required before writes.
+5. Execution checks current CRM state before each write, verifies each result, and journals progress. Revenue plus unpaid AR triggers a new account and CHOW linkage while preserving the old account. Failed or uncertain creation requests require investigation, never blind retry.
 
-Open http://127.0.0.1:8766. The included dashboard contains a fictional assessment snapshot. Decisions and notes are stored in your browser; export them before switching browsers or clearing storage. Dashboard approvals do not directly write to the CRM.
+Changing evidence invalidates approval. Ambiguous, missing and unlisted records cannot be approved for automatic writes without a supported exact plan. Refresh does not automatically resolve uncertainty or invent ownership evidence. The application currently supports name and ownership corrections; duplicate survivor selection and manual field-correction plans remain operator investigations.
 
-## Read-only scan
+Tests: `npm test`. All remote write behavior is tested against mocks, not by making extra CRM changes.
 
-Copy `.env.example` to `work/.env`, enter your own candidate token, then run:
+Private runtime state is stored in `work/platform-private` relative to the original workspace root. Keep that directory and exported review data out of public repositories. Previous saved review exports are imported as history; earlier approvals are not silently converted into new execution authority.
 
-```sh
-npm run scan
-npm run build
-```
 
-The scraper follows paginated community listings and homepage community links. It saves source HTML and paginates CRM account reads. Matching normalizes addresses and ZIP codes, with exact normalized-name fallback. AI assisted development and interpretation; the runtime matching uses deterministic rules, without an LLM API dependency. Name-only fallback can produce false positives and requires review.
 
-## Human review and synchronization
-
-Review source evidence, candidate identity, proposed corrections, and billing history. Approve supported corrections, reject incorrect proposals, and flag ambiguity. An approved change plan is executed separately through `work/apply-approved.mjs`; this is an operator-controlled script, not automatic execution of dashboard selections. Keep private review exports, change plans and execution audits outside version control.
-
-For ownership changes, revenue history AND positive unpaid AR require a new account under the correct parent. Only the old account's CHOW pointer changes; its parent and billing history remain preserved. Other approved ownership changes can re-parent directly. Updates are read back and verified, with a local execution audit.
-
-## Existing implementation limits
-
-This repository preserves the existing application rather than rebuilding it. The dashboard is a snapshot. Build scripts use the assessment's original summary counts. Approval export-to-plan preparation is operator assisted. The execution audit skips verified operations, but partial CHOW failure recovery still requires operator review before retrying. Persistent daily decision reconciliation and a daily schedule are not yet complete. Do not treat this version as an unattended production synchronizer.
-
-## Security
-
-Never commit candidate tokens, `.env`, welcome-page HTML, private notes, change plans or execution audits. The published dashboard contains fictional assessment records; no candidate token is required to view it. API credentials remain local.
-
-## Validation
-
-JavaScript syntax checks and a dashboard rendering smoke check were run before packaging. Eight previously approved CRM operations were applied and read back during the assessment; that does not certify all unresolved records or complete end-to-end automation.
+From the repository root, run `npm start` and `npm test`. The original snapshot implementation remains under work/ and outputs/ for reference. The current application lives in platform/.

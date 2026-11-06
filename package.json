@@ -1,1 +1,1 @@
-{"name":"bellhaven-crm-assessment","version":"1.0.0","private":true,"description":"Human-reviewed Bellhaven CRM reconciliation","engines":{"node":">=24"},"scripts":{"start":"node work/serve-dashboard-8766.cjs","scan":"node work/scan.mjs","build":"node work/build-dashboard.mjs && node work/organize-review.cjs && node work/add-recommendations.cjs"}}
+{"name":"bellhaven-crm-assessment","version":"2.0.0","private":true,"engines":{"node":">=24"},"scripts":{"start":"node platform/server.mjs","test":"node --test platform/engine.test.mjs"}}

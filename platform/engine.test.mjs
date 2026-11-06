@@ -1,0 +1,14 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {reconcile,executePlan} from './engine.mjs';
+const w={name:'Bellhaven Test',billing_street:'10 Main Street',billing_city:'Dayton',billing_state:'OH',billing_zip:'45401',source:'https://example.test/test'};
+const a={...w,account_id:'a',name:w.name,billing_street:'10 Main St',parent_id:'parent',lifetime_revenue:0,outstanding_ar:0};
+const row=(accounts)=>reconcile({locations:[w],accounts,parent:{account_id:'parent'}})[0];
+test('full normalized identity is a strong match',()=>assert.equal(row([a]).kind,'matched'));
+test('same name in another state never produces a write plan',()=>assert.equal(row([{...a,billing_state:'CO'}]).plan,null));
+test('duplicates never auto-approve',()=>assert.equal(row([a,{...a,account_id:'b'}]).recommendation,'Needs verification'));
+test('revenue and unpaid AR require CHOW',()=>assert.equal(row([{...a,parent_id:'old',lifetime_revenue:100,outstanding_ar:10}]).plan.type,'chow'));
+test('revenue without unpaid AR allows reparent',()=>assert.equal(row([{...a,parent_id:'old',lifetime_revenue:100}]).plan.type,'patch'));
+test('linked historical CHOW account is excluded as a candidate',()=>assert.equal(row([a,{...a,account_id:'old',chow_current_account:'a'}]).kind,'matched'));
+test('stale approved state blocks writes',async()=>{let writes=0;await assert.rejects(executePlan({type:'patch',account_id:'a',before:a,patch:{name:'new'}},async(p,m)=>{if(m)writes++;return{...a,name:'changed'}},{},async()=>{}));assert.equal(writes,0)});
+test('patch is verified and repeat run performs no writes',async()=>{let current={...a},writes=0,j={};let api=async(p,m,b)=>{if(m){writes++;Object.assign(current,b)}return{...current}};let plan={type:'patch',account_id:'a',before:a,patch:{name:'new'}};await executePlan(plan,api,j,async()=>{});await executePlan(plan,api,j,async()=>{});assert.equal(writes,1);assert.equal(j.status,'verified')});
+test('uncertain creation cannot be blindly repeated',async()=>{await assert.rejects(executePlan({type:'chow'},async()=>{throw Error('Should not call')},{status:'creating'},async()=>{}),/uncertain/)});
+test('CHOW preserves balances and connects new account',async()=>{let old={...a,parent_id:'old',lifetime_revenue:100,outstanding_ar:10},created,j={};const before={...old};const api=async(p,m,b)=>{if(m==='POST')return created={...b,account_id:'new'};if(m==='PATCH'){Object.assign(old,b);return{...old}}return p.endsWith('/new')?{...created}:{...old}};await executePlan({type:'chow',account_id:'a',before,newAccount:{name:w.name,parent_id:'parent',lifetime_revenue:0,outstanding_ar:0}},api,j,async()=>{});assert.equal(old.parent_id,'old');assert.equal(old.outstanding_ar,10);assert.equal(old.chow_current_account,'new');assert.equal(j.status,'verified')});

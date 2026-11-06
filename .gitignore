@@ -1,5 +1,6 @@
 .env
 work/.env
+work/platform-private/
 node_modules/
 work/*.json
 work/source-*.html
