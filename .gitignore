@@ -1,6 +1,7 @@
 .env
-work/.env
+.env.*
 work/platform-private/
+work/codex-openai-platform*/
 node_modules/
 work/*.json
 work/source-*.html

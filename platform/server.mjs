@@ -1,5 +1,9 @@
+import {askConnie,connieContext,builtInGuide} from './connie.mjs';
 import http from 'node:http';import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {randomBytes} from 'node:crypto';import {reconcile,fingerprint,executePlan} from './engine.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(here,path.basename(path.dirname(here))==='outputs'?'../..':'..'),privateDir=path.join(root,'work/platform-private');fs.mkdirSync(privateDir,{recursive:true});
+
+let openaiKey=process.env.OPENAI_API_KEY||'';const aiEnv=path.join(here,'.env.local');if(!openaiKey&&fs.existsSync(aiEnv)){const match=fs.readFileSync(aiEnv,'utf8').match(/^OPENAI_API_KEY\s*=\s*(.+)$/m);if(match)openaiKey=match[1].trim().replace(/^['"]|['"]$/g,'');}let chatCalls=[],chatInFlight=false;
+
 let token=process.env.BELLHAVEN_TOKEN||'';if(!token){let env=path.join(root,'work/.env');if(fs.existsSync(env))token=fs.readFileSync(env,'utf8').trim().split('=')[1]||'';}
 const scope=fingerprint(token||'no-token').slice(0,16),stateFile=path.join(privateDir,scope+'.json');
 let state=fs.existsSync(stateFile)?JSON.parse(fs.readFileSync(stateFile)): {decisions:{},history:{},journal:{}};state.history||={};let busy=false,confirmation=null;const csrf=randomBytes(24).toString('hex');
@@ -20,6 +24,9 @@ const server=http.createServer(async(req,res)=>{const send=(code,d)=>{res.writeH
  if(req.method==='GET'&&url.pathname==='/api/state')return send(200,{csrf,rows:rows(),accounts:state.snapshot.accounts,scannedAt:state.snapshot.scannedAt,configured:!!token,journal:state.journal});
  if(req.method!=='POST'||req.headers['x-review-token']!==csrf)return send(403,{error:'Invalid request'});if(req.headers.origin&&req.headers.origin!==`http://${req.headers.host}`)return send(403,{error:'Invalid origin'});if(busy)return send(409,{error:'Another operation is running'});
  let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>200000)throw Error('Request too large')}const body=JSON.parse(raw||'{}');
+ if(url.pathname==='/api/chat'){
+ if(typeof body.message!=='string'||!body.message.trim())throw Error('Enter a question for Connie.');chatCalls=chatCalls.filter(t=>Date.now()-t<60000);if(chatInFlight||chatCalls.length>=8)return send(429,{error:'Please wait a moment before asking Connie again.'});chatCalls.push(Date.now());chatInFlight=true;try{const context=connieContext(rows(),body,state.snapshot.scannedAt);const answer=await askConnie({apiKey:openaiKey,context,message:body.message,history:Array.isArray(body.history)?body.history:[],model:process.env.CONNIE_MODEL||'gpt-4.1-mini'});return send(200,{answer,mode:'ai'})}catch(e){if(e.code==='AI_UNAVAILABLE')return send(200,{answer:builtInGuide(connieContext(rows(),body,state.snapshot.scannedAt),body.message),mode:'guide',notice:e.message});throw e;}finally{chatInFlight=false}
+ }
  if(url.pathname==='/api/refresh'){busy=true;try{await refresh();return send(200,{ok:true})}finally{busy=false}}
  if(url.pathname==='/api/decision'){const r=rows().find(r=>r.id===body.id);if(!r)throw Error('Unknown record');if(!['approve','reject','needs verification','pending'].includes(body.status))throw Error('Invalid decision');if(body.status==='approve'&&!r.plan&&r.kind!=='matched')throw Error('Resolve this ambiguous match before approval');state.decisions[r.id]={status:body.status,note:String(body.note||''),fingerprint:r.fingerprint,at:new Date().toISOString()};confirmation=null;persist();return send(200,{ok:true})}
  if(url.pathname==='/api/bulk'){let n=0;for(const r of rows().filter(r=>r.kind==='matched')){if(state.decisions[r.id]?.status==='reject'||state.decisions[r.id]?.status==='needs verification')continue;state.decisions[r.id]={status:'approve',note:state.decisions[r.id]?.note||'',fingerprint:r.fingerprint,at:new Date().toISOString()};n++}persist();confirmation=null;return send(200,{count:n})}
@@ -28,6 +35,7 @@ const server=http.createServer(async(req,res)=>{const send=(code,d)=>{res.writeH
  return send(404,{error:'Not found'});
  }catch(e){send(400,{error:e.message})}});
 const port=Number(process.env.PORT||8767);server.listen(port,'127.0.0.1',()=>console.log('COTYE CRM workspace: http://127.0.0.1:'+port));
+
 
 
 

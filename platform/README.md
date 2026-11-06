@@ -17,3 +17,11 @@ Changing evidence invalidates approval. Ambiguous, missing and unlisted records 
 Tests: `npm test`. All remote write behavior is tested against mocks, not by making extra CRM changes.
 
 Private runtime state is stored in `work/platform-private` relative to the original workspace root. Keep that directory and exported review data out of public repositories. Previous saved review exports are imported as history; earlier approvals are not silently converted into new execution authority.
+
+## Connie and display options
+
+Use the header theme toggle for persistent light/dark mode. Mismatched names and addresses use a muted warm accent, with field labels. Proposed corrections are displayed as current-versus-proposed values, including the final confirmation.
+
+Connie is a page-aware sales operations coach. Configure OPENAI_API_KEY in platform/.env.local (excluded from version control), or set it in the server environment. CONNIE_MODEL optionally overrides the default gpt-4.1-mini model. Connie sends the question, limited chat history and relevant account evidence to OpenAI; secrets and reviewer notes are excluded from that context. Responses use store:false. Connie has no action tools and cannot write CRM or approve records. Usage requires available API credits.
+
+When the API returns a credit or rate-limit error, the panel labels its response as a built-in guide (not an AI-generated answer). This guide covers review steps, decisions, billing protection and commencement. Conversation history remains in the tab only. Credentials and account decisions remain server-side. The setup credential expires after the period selected during setup; configure your own credential for reuse.

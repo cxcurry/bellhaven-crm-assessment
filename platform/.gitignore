@@ -1,3 +1,6 @@
 .env
 platform-private/
 *.audit.json
+
+.env.local
+.env.*
