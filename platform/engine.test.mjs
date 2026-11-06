@@ -1,8 +1,10 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {reconcile,executePlan} from './engine.mjs';
+import test from 'node:test';import assert from 'node:assert/strict';import {reconcile,executePlan,updateVerifiedSnapshot} from './engine.mjs';
 const w={name:'Bellhaven Test',billing_street:'10 Main Street',billing_city:'Dayton',billing_state:'OH',billing_zip:'45401',source:'https://example.test/test'};
 const a={...w,account_id:'a',name:w.name,billing_street:'10 Main St',parent_id:'parent',lifetime_revenue:0,outstanding_ar:0};
 const row=(accounts)=>reconcile({locations:[w],accounts,parent:{account_id:'parent'}})[0];
 test('full normalized identity is a strong match',()=>assert.equal(row([a]).kind,'matched'));
+test('verified correction replaces stale displayed mismatch',()=>{const snapshot={locations:[w],accounts:[{...a,name:'Old name'}],parent:{account_id:'parent'}};assert.equal(reconcile(snapshot)[0].kind,'name correction');updateVerifiedSnapshot(snapshot,{status:'verified',after:a});assert.equal(reconcile(snapshot)[0].kind,'matched');assert.equal(reconcile(snapshot)[0].candidates[0].name,w.name)});
+test('unverified update never clears discrepancy',()=>{const snapshot={locations:[w],accounts:[{...a,name:'Old name'}],parent:{account_id:'parent'}};assert.equal(updateVerifiedSnapshot(snapshot,{status:'updating',after:a}),false);assert.equal(reconcile(snapshot)[0].kind,'name correction')});
 test('same name in another state never produces a write plan',()=>assert.equal(row([{...a,billing_state:'CO'}]).plan,null));
 test('duplicates never auto-approve',()=>assert.equal(row([a,{...a,account_id:'b'}]).recommendation,'Needs verification'));
 test('revenue and unpaid AR require CHOW',()=>assert.equal(row([{...a,parent_id:'old',lifetime_revenue:100,outstanding_ar:10}]).plan.type,'chow'));

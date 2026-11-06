@@ -2,6 +2,12 @@ import {createHash} from 'node:crypto';
 export const fingerprint=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export const norm=s=>String(s||'').toLowerCase().replace(/\b(northwest|northeast|southwest|southeast|street|avenue|boulevard|road|drive|lane|north|south|east|west)\b/g,x=>({northwest:'nw',northeast:'ne',southwest:'sw',southeast:'se',street:'st',avenue:'ave',boulevard:'blvd',road:'rd',drive:'dr',lane:'ln',north:'n',south:'s',east:'e',west:'w'})[x]).replace(/[^a-z0-9]/g,'');
 export const samePlace=(a,b)=>['billing_street','billing_city','billing_state','billing_zip'].every(k=>norm(a[k])===norm(b[k]));
+export function updateVerifiedSnapshot(snapshot,journal,newAccount){
+ if(journal.status!=='verified'||!journal.after)return false;
+ const records=[journal.after,...(newAccount?[newAccount]:[])];
+ for(const account of records){const index=snapshot.accounts.findIndex(a=>a.account_id===account.account_id);if(index<0)snapshot.accounts.push(account);else snapshot.accounts[index]=account;}
+ return true;
+}
 export function reconcile(snapshot){
  const {accounts,locations,parent}=snapshot;let used=new Set();
  const rows=locations.map(w=>{
