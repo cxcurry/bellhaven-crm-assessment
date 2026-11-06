@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {createDecisionGate,nextReviewId} from './review-flow.mjs';
+test('first click arms; second click confirms exactly once',()=>{const gate=createDecisionGate();assert.equal(gate.choose('a','approve'),false);assert.equal(gate.choose('a','approve'),true);assert.equal(gate.choose('a','approve'),false)});
+test('switching choices needs a fresh second click',()=>{const gate=createDecisionGate();gate.choose('a','approve');assert.equal(gate.choose('a','reject'),false);assert.equal(gate.choose('a','reject'),true)});
+test('switching accounts never confirms a different record',()=>{const gate=createDecisionGate();gate.choose('a','approve');assert.equal(gate.choose('b','approve'),false)});
+test('next account skips approvals and rejections and wraps',()=>{const rows=[{id:'a'},{id:'b',valid:true,decision:{status:'reject'}},{id:'c',valid:true,decision:{status:'approve'}},{id:'d'}];assert.equal(nextReviewId(rows,'a'),'d');assert.equal(nextReviewId(rows,'d'),'a')});

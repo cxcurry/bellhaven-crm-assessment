@@ -21,6 +21,7 @@ function confirmationData(){const all=rows(),approved=all.filter(r=>r.valid&&r.d
 const server=http.createServer(async(req,res)=>{const send=(code,d)=>{res.writeHead(code,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(d))};try{
  if(req.headers.host!==`127.0.0.1:${port}`&&req.headers.host!==`localhost:${port}`)return send(403,{error:'Invalid host'});
  const url=new URL(req.url,'http://localhost');if(req.method==='GET'&&url.pathname==='/'){res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(here,'index.html')))}
+ if(req.method==='GET'&&url.pathname==='/review-flow.mjs'){res.writeHead(200,{'Content-Type':'text/javascript','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(here,'review-flow.mjs')))}
  if(req.method==='GET'&&url.pathname==='/api/state')return send(200,{csrf,rows:rows(),accounts:state.snapshot.accounts,scannedAt:state.snapshot.scannedAt,configured:!!token,journal:state.journal});
  if(req.method!=='POST'||req.headers['x-review-token']!==csrf)return send(403,{error:'Invalid request'});if(req.headers.origin&&req.headers.origin!==`http://${req.headers.host}`)return send(403,{error:'Invalid origin'});if(busy)return send(409,{error:'Another operation is running'});
  let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>200000)throw Error('Request too large')}const body=JSON.parse(raw||'{}');
