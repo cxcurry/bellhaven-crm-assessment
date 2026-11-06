@@ -25,7 +25,16 @@ Use the header theme toggle for persistent light/dark mode. Mismatched names and
 Connie is a page-aware sales operations coach. Configure OPENAI_API_KEY in platform/.env.local (excluded from version control), or set it in the server environment. CONNIE_MODEL optionally overrides the default gpt-4.1-mini model. Connie sends the question, limited chat history and relevant account evidence to OpenAI; secrets and reviewer notes are excluded from that context. Responses use store:false. Connie has no action tools and cannot write CRM or approve records. Usage requires available API credits.
 
 When the API returns a credit or rate-limit error, the panel labels its response as a built-in guide (not an AI-generated answer). This guide covers review steps, decisions, billing protection and commencement. Conversation history remains in the tab only. Credentials and account decisions remain server-side. The setup credential expires after the period selected during setup; configure your own credential for reuse.
+Individual review choices use two-click confirmation: the first click asks You sure?, the second saves and opens the next unresolved account. A double-click works as the same two clicks. Escape or changing choices cancels the armed choice. Save note does not advance. Bulk matching approval bypasses individual confirmation. CRM execution still requires the separate final confirmation.
+
+## Final assessment resolution review
+
+Open `/resolution-review` from Investigated corrections. It includes the evidence-backed investigation plan for the fictional assessment: duplicate survivor recommendations, address corrections, missing facility creation and conservative Needs Review flags. Select recommendations, click Commence, review selected and excluded groups, acknowledge, then click Yes. Existing approved field corrections are included in the final preview. Every operation is read back and verified; completed operations are journaled and skipped on repeats. An uncertain creation result stops rather than creating another copy. The page shows timestamped execution receipts.
+
+The included resolution plan is an assessment-specific prepared recommendation set. It contains fictional CRM data, not credentials or reviewer notes. It does not authorize writes by itself. Account preconditions protect against stale records; a different CRM dataset requires a new investigation plan. Three unlisted facilities have unresolved ownership and are proposed for Needs Review rather than unsupported reassignment. Kettering survivor selection is a documented analyst choice among equivalent zero-balance records.
+
+See DAILY-SCHEDULE.md for a daily read-only scan configuration. It has not been activated.
 
 
 
-From the repository root, run `npm start` and `npm test`. The current application is in platform/; original assessment scripts remain for reference.
+From the repository root: `npm start`, `npm test`. The current platform is in platform/.

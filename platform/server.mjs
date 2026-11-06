@@ -1,3 +1,4 @@
+import {runResolutions} from './resolutions.mjs';
 import {askConnie,connieContext,builtInGuide} from './connie.mjs';
 import http from 'node:http';import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {randomBytes} from 'node:crypto';import {reconcile,fingerprint,executePlan,updateVerifiedSnapshot} from './engine.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(here,path.basename(path.dirname(here))==='outputs'?'../..':'..'),privateDir=path.join(root,'work/platform-private');fs.mkdirSync(privateDir,{recursive:true});
@@ -18,13 +19,23 @@ for(const r of reconcile(state.snapshot)){const previous=state.history[r.id];if(
 persist();
 const rows=()=>reconcile(state.snapshot).map(r=>({...r,decision:state.decisions[r.id],previous:state.history[r.id],valid:state.decisions[r.id]?.fingerprint===r.fingerprint}));
 function confirmationData(){const all=rows(),approved=all.filter(r=>r.valid&&r.decision.status==='approve'),excluded=all.filter(r=>!(r.valid&&r.decision.status==='approve'));return{approved:approved.filter(r=>r.plan),noChange:approved.filter(r=>!r.plan),excluded};}
+
+function resolutionGroups(){const localPlan=path.join(root,'outputs/Unverified-resolution-plan.json');const file=fs.existsSync(localPlan)?localPlan:path.join(here,'resolution-plan.json');if(!fs.existsSync(file))throw Error('No investigation plan is prepared on this computer.');const groups=JSON.parse(fs.readFileSync(file)).groups;for(const r of rows().filter(r=>r.valid&&r.decision.status==='approve'&&r.plan?.type==='patch'))groups.push({id:'approved-'+r.id,title:r.website.name,confidence:'Previously approved correction',proposal:'Apply the existing approved field correction.',evidence:r.reason,operations:[{type:'patch',account_id:r.plan.account_id,before:r.plan.before,changes:r.plan.patch}]});return groups;}
+async function allAccounts(){let list=[],page=1,total;do{const response=await fetch('https://analyst-assessment-production.up.railway.app/api/v1/accounts?page_size=50&page='+page++,{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error('CRM account read failed');const d=await response.json();list.push(...d.data);total=d.total;if(!d.data.length&&list.length<total)throw Error('Incomplete CRM read')}while(list.length<total);return list;}
+
 const server=http.createServer(async(req,res)=>{const send=(code,d)=>{res.writeHead(code,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(d))};try{
  if(req.headers.host!==`127.0.0.1:${port}`&&req.headers.host!==`localhost:${port}`)return send(403,{error:'Invalid host'});
  const url=new URL(req.url,'http://localhost');if(req.method==='GET'&&url.pathname==='/'){res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(here,'index.html')))}
  if(req.method==='GET'&&url.pathname==='/review-flow.mjs'){res.writeHead(200,{'Content-Type':'text/javascript','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(here,'review-flow.mjs')))}
+ if(req.method==='GET'&&url.pathname==='/resolution-review'){const localReview=path.join(root,'outputs/Unverified-resolution-review.html');const review=fs.existsSync(localReview)?localReview:path.join(here,'resolution-review.html');if(!fs.existsSync(review))return send(404,{error:'No prepared resolution review'});res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(review))}
+ if(req.method==='GET'&&url.pathname==='/api/resolutions')return send(200,{csrf,groups:resolutionGroups(),receipts:state.resolutionReceipts||[]});
  if(req.method==='GET'&&url.pathname==='/api/state')return send(200,{csrf,rows:rows(),accounts:state.snapshot.accounts,scannedAt:state.snapshot.scannedAt,configured:!!token,journal:state.journal});
  if(req.method!=='POST'||req.headers['x-review-token']!==csrf)return send(403,{error:'Invalid request'});if(req.headers.origin&&req.headers.origin!==`http://${req.headers.host}`)return send(403,{error:'Invalid origin'});if(busy)return send(409,{error:'Another operation is running'});
  let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>200000)throw Error('Request too large')}const body=JSON.parse(raw||'{}');
+ 
+ if(url.pathname==='/api/resolution-preview'){const all=resolutionGroups();const ids=Array.isArray(body.ids)?body.ids:[];const selected=all.filter(g=>ids.includes(g.id));if(!selected.length)throw Error('Select at least one recommendation.');confirmation={id:randomBytes(24).toString('hex'),kind:'resolutions',hash:fingerprint(selected),ids:selected.map(g=>g.id),expires:Date.now()+300000};return send(200,{confirmation:confirmation.id,selected,excluded:all.filter(g=>!ids.includes(g.id))});}
+ if(url.pathname==='/api/resolution-execute'){if(!confirmation||confirmation.kind!=='resolutions'||body.confirmation!==confirmation.id||Date.now()>confirmation.expires)throw Error('Review the confirmation again.');const selected=resolutionGroups().filter(g=>confirmation.ids.includes(g.id));if(fingerprint(selected)!==confirmation.hash)throw Error('Recommendations changed. Review again.');confirmation=null;busy=true;try{state.resolutionJournal||={};const results=await runResolutions(selected,{api,accounts:allAccounts,journals:state.resolutionJournal,save:async()=>persist(),snapshot:state.snapshot});state.resolutionReceipts=[...(state.resolutionReceipts||[]),{at:new Date().toISOString(),results}];for(const r of reconcile(state.snapshot)){const d=state.decisions[r.id];if(r.kind==='matched'&&(d?.status==='approve'||selected.some(g=>g.id===r.id||g.id===r.id+'-create'))){if(d)state.history[r.id]||={...d};state.decisions[r.id]={...d,status:'approve',fingerprint:r.fingerprint,at:new Date().toISOString()};}}persist();return send(200,{results})}finally{busy=false}}
+
  if(url.pathname==='/api/chat'){
  if(typeof body.message!=='string'||!body.message.trim())throw Error('Enter a question for Connie.');chatCalls=chatCalls.filter(t=>Date.now()-t<60000);if(chatInFlight||chatCalls.length>=8)return send(429,{error:'Please wait a moment before asking Connie again.'});chatCalls.push(Date.now());chatInFlight=true;try{const context=connieContext(rows(),body,state.snapshot.scannedAt);const answer=await askConnie({apiKey:openaiKey,context,message:body.message,history:Array.isArray(body.history)?body.history:[],model:process.env.CONNIE_MODEL||'gpt-4.1-mini'});return send(200,{answer,mode:'ai'})}catch(e){if(e.code==='AI_UNAVAILABLE')return send(200,{answer:builtInGuide(connieContext(rows(),body,state.snapshot.scannedAt),body.message,Array.isArray(body.history)?body.history:[]),mode:'guide',notice:e.message});throw e;}finally{chatInFlight=false}
  }
@@ -35,7 +46,12 @@ const server=http.createServer(async(req,res)=>{const send=(code,d)=>{res.writeH
  if(url.pathname==='/api/execute'){let data=confirmationData();if(!confirmation||body.confirmation!==confirmation.id||Date.now()>confirmation.expires||fingerprint(data)!==confirmation.hash)throw Error('Confirmation expired or decisions changed. Review again.');confirmation=null;busy=true;const results=[];try{for(const r of data.approved){let key=fingerprint(r.plan),journal=state.journal[key]||={};try{await executePlan(r.plan,api,journal,async()=>persist());const currentNew=journal.newId?await api('/accounts/'+journal.newId):undefined;updateVerifiedSnapshot(state.snapshot,journal,currentNew);const updated=rows().find(item=>item.id===r.id);if(updated?.kind==='matched')state.decisions[r.id]={...state.decisions[r.id],fingerprint:updated.fingerprint};persist();results.push({name:r.website.name,status:journal.status})}catch(e){results.push({name:r.website.name,status:'stopped',error:e.message});break}}persist();return send(200,{results})}finally{busy=false}}
  return send(404,{error:'Not found'});
  }catch(e){send(400,{error:e.message})}});
-const port=Number(process.env.PORT||8767);server.listen(port,'127.0.0.1',()=>console.log('COTYE CRM workspace: http://127.0.0.1:'+port));
+const port=Number(process.env.PORT||8767);if(process.argv.includes('--scan-only')){await refresh();console.log('Read-only daily scan complete: '+state.snapshot.locations.length+' website locations; '+state.snapshot.accounts.length+' CRM accounts.')}else server.listen(port,'127.0.0.1',()=>console.log('COTYE CRM workspace: http://127.0.0.1:'+port));
+
+
+
+
+
 
 
 

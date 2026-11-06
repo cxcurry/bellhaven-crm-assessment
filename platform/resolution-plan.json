@@ -1,0 +1,586 @@
+{
+  "preparedAt": "2026-11-06T18:55:34.680Z",
+  "crmWritesPerformed": false,
+  "scope": "New evidence-backed proposals only. Existing notes, rejections and decisions are preserved. None of these proposals are approved automatically.",
+  "aboutSource": "https://analyst-assessment-production.up.railway.app/about",
+  "groups": [
+    {
+      "id": "bellhaven-of-port-clinton",
+      "title": "Bellhaven of Port Clinton",
+      "confidence": "High confidence",
+      "evidence": "Full physical address matches. Current Bellhaven account has administrator Brenda Whitfield, matching the website; Harborview copy has no contacts. Both have zero revenue and AR. About page confirms Harborview acquisition.",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-port-clinton",
+      "proposal": "Keep Bellhaven of Port Clinton (001UELXDAKFRKB8932); mark 1 losing account(s) Inactive and link them to the survivor. Preserve contacts and records; no merge or deletion.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001JD2MWRA74LTSN24",
+          "before": {
+            "account_id": "001JD2MWRA74LTSN24",
+            "name": "Harborview Nursing & Rehab of Port Clinton",
+            "parent_id": "001FJZYHR7MLFMNPLL",
+            "parent_name": "Harborview Care Group (Parent Account)",
+            "billing_street": "1420 Harbor Point Drive",
+            "billing_city": "Port Clinton",
+            "billing_state": "OH",
+            "billing_zip": "43452",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(216) 314-1338",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001UELXDAKFRKB8932",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven of Port Clinton. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-port-clinton"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-shores-of-erie",
+      "title": "Bellhaven Shores of Erie",
+      "confidence": "High confidence",
+      "evidence": "Full normalized address and current Bellhaven name/parent match. Bellhaven administrator Angela Quinn matches the website; Harborview copy has no contacts. Both have zero revenue and AR.",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-shores-of-erie",
+      "proposal": "Keep Bellhaven Shores of Erie (001CVBBCSDM7YHN220); mark 1 losing account(s) Inactive and link them to the survivor. Preserve contacts and records; no merge or deletion.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001BLYF02K97SZLZHH",
+          "before": {
+            "account_id": "001BLYF02K97SZLZHH",
+            "name": "Harborview Shores of Erie",
+            "parent_id": "001FJZYHR7MLFMNPLL",
+            "parent_name": "Harborview Care Group (Parent Account)",
+            "billing_street": "4930 West Lake Road",
+            "billing_city": "Erie",
+            "billing_state": "PA",
+            "billing_zip": "16505",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(517) 775-8456",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001CVBBCSDM7YHN220",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven Shores of Erie. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-shores-of-erie"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-gardens-of-monroe",
+      "title": "Bellhaven Gardens of Monroe",
+      "confidence": "Strong inference: current account preferred; no dated transfer record",
+      "evidence": "All three share the same normalized full address. Keep the current Bellhaven name/parent and the existing billing-coordinator relationship. Other copies have no contacts; all three have zero revenue and AR. About page confirms former Harborview/Cedar Trail acquisitions.",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-gardens-of-monroe",
+      "proposal": "Keep Bellhaven Gardens of Monroe (001U1750VLVJAGG1S5); mark 2 losing account(s) Inactive and link them to the survivor. Preserve contacts and records; no merge or deletion.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "0011AB44D05WLA9HTX",
+          "before": {
+            "account_id": "0011AB44D05WLA9HTX",
+            "name": "Cedar Trail of Monroe",
+            "parent_id": "001FWSQ30SFW6S7604",
+            "parent_name": "Cedar Trail Communities (Parent Account)",
+            "billing_street": "750 Stewart Road",
+            "billing_city": "Monroe",
+            "billing_state": "MI",
+            "billing_zip": "48162",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(216) 748-7799",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001U1750VLVJAGG1S5",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven Gardens of Monroe. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-gardens-of-monroe"
+          }
+        },
+        {
+          "type": "patch",
+          "account_id": "00159PL81N38KM4FHM",
+          "before": {
+            "account_id": "00159PL81N38KM4FHM",
+            "name": "Monroe Gardens Care Center",
+            "parent_id": "001FJZYHR7MLFMNPLL",
+            "parent_name": "Harborview Care Group (Parent Account)",
+            "billing_street": "750 Stewart Rd",
+            "billing_city": "Monroe",
+            "billing_state": "MI",
+            "billing_zip": "48162",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(330) 501-4496",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001U1750VLVJAGG1S5",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven Gardens of Monroe. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-gardens-of-monroe"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-owosso",
+      "title": "Bellhaven of Owosso",
+      "confidence": "High confidence",
+      "evidence": "Same normalized full address and name. Survivor phone (734) 503-1363 and administrator Gloria Lambert both match the website. Other copy has a different phone and an admissions contact. Both have zero balances. Preserve that contact on the retained inactive duplicate.",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-owosso",
+      "proposal": "Keep Bellhaven of Owosso (001EGU7BMJ942ZTRE6); mark 1 losing account(s) Inactive and link them to the survivor. Preserve contacts and records; no merge or deletion.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001QU150PM4Z15UA71",
+          "before": {
+            "account_id": "001QU150PM4Z15UA71",
+            "name": "Bellhaven of Owosso",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "1120 West Main Street",
+            "billing_city": "Owosso",
+            "billing_state": "MI",
+            "billing_zip": "48867",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(330) 383-5991",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001EGU7BMJ942ZTRE6",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven of Owosso. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-owosso"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-kettering",
+      "title": "Bellhaven of Kettering",
+      "confidence": "Analyst choice: equivalent records; no uniquely provable survivor",
+      "evidence": "Three equivalent-address accounts found, including Wilmington Pk = Wilmington Pike. All have zero revenue/AR and no contacts. Website establishes current Bellhaven identity; about page confirms acquisitions. Select the Harborview Care Centre as survivor, rename/reparent it, and retain the other copies as linked inactive duplicates.",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering",
+      "proposal": "Keep Kettering Care Centre (001WR41PYNWXCAE2X4); mark 2 losing account(s) Inactive and link them to the survivor. Preserve contacts and records; no merge or deletion.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001WR41PYNWXCAE2X4",
+          "before": {
+            "account_id": "001WR41PYNWXCAE2X4",
+            "name": "Kettering Care Centre",
+            "parent_id": "001FJZYHR7MLFMNPLL",
+            "parent_name": "Harborview Care Group (Parent Account)",
+            "billing_street": "3313 Wilmington Pike",
+            "billing_city": "Kettering",
+            "billing_state": "OH",
+            "billing_zip": "45429",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(419) 600-2603",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "name": "Bellhaven of Kettering",
+            "parent_id": "0015QAPLGS3FVYEEEM"
+          }
+        },
+        {
+          "type": "patch",
+          "account_id": "0016KTS1UAWBRXS09J",
+          "before": {
+            "account_id": "0016KTS1UAWBRXS09J",
+            "name": "Kettering Nursing & Rehabilitation",
+            "parent_id": "",
+            "parent_name": "",
+            "billing_street": "3313 Wilmington Pike",
+            "billing_city": "Kettering",
+            "billing_state": "OH",
+            "billing_zip": "45429",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(216) 345-3441",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001WR41PYNWXCAE2X4",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven of Kettering. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering"
+          }
+        },
+        {
+          "type": "patch",
+          "account_id": "001B7XZAA3AFALS9GP",
+          "before": {
+            "account_id": "001B7XZAA3AFALS9GP",
+            "name": "Kettering Senior Campus",
+            "parent_id": "001FWSQ30SFW6S7604",
+            "parent_name": "Cedar Trail Communities (Parent Account)",
+            "billing_street": "3313 Wilmington Pk",
+            "billing_city": "Kettering",
+            "billing_state": "OH",
+            "billing_zip": "45429",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(517) 646-8751",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Inactive",
+            "duplicate_of_account": "001WR41PYNWXCAE2X4",
+            "note": "Assessment reconciliation: same normalized physical location as Bellhaven of Kettering. Current website lists Bellhaven; duplicate retained for audit and linked to surviving account. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-ashtabula",
+      "title": "Bellhaven of Ashtabula",
+      "confidence": "High confidence",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-ashtabula",
+      "evidence": "Exact facility name, city, state, ZIP, phone (260) 440-4975 and administrator Ned Green match. CRM contains a PO Box rather than the physical street.",
+      "proposal": "Use 3156 W Prospect Rd as the billing street; retain the former PO Box in the account note.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001NXP9X46CWEPSLSV",
+          "before": {
+            "account_id": "001NXP9X46CWEPSLSV",
+            "name": "Bellhaven of Ashtabula",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "PO Box 517",
+            "billing_city": "Ashtabula",
+            "billing_state": "OH",
+            "billing_zip": "44004",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(260) 440-4975",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "billing_street": "3156 W Prospect Rd",
+            "note": "Website verified physical facility address: 3156 W Prospect Rd, Ashtabula, OH 44004. Previous billing street was PO Box 517; retained here for reference. Website phone and administrator also match."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-portsmouth",
+      "title": "Bellhaven of Portsmouth",
+      "confidence": "High confidence",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-portsmouth",
+      "evidence": "Exact name, street, city, state, phone (330) 431-2495 and administrator Tanya Quinn match. CRM ZIP 45626 conflicts with website ZIP 45662.",
+      "proposal": "Correct the ZIP from 45626 to 45662.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001CF3LDWVRGL09P4F",
+          "before": {
+            "account_id": "001CF3LDWVRGL09P4F",
+            "name": "Bellhaven of Portsmouth",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "2222 Gallia St",
+            "billing_city": "Portsmouth",
+            "billing_state": "OH",
+            "billing_zip": "45626",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(330) 431-2495",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "billing_zip": "45662"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-batavia-create",
+      "title": "Bellhaven of Batavia",
+      "confidence": "High confidence after full account search",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-batavia",
+      "evidence": "Full CRM account set searched by name, street variants, city/state/ZIP; no account identifies this physical location. No CRM account exists in the website city/state. New Carlisle, OH is a different facility from Carlisle, PA.",
+      "proposal": "Create one Active facility under Bellhaven; zero historical revenue and AR. No existing account is modified.",
+      "operations": [
+        {
+          "type": "create",
+          "account": {
+            "name": "Bellhaven of Batavia",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "billing_street": "2000 Hospital Dr",
+            "billing_city": "Batavia",
+            "billing_state": "OH",
+            "billing_zip": "45103",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(231) 698-3092",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "note": "Created from current Bellhaven website after checking all existing accounts for this physical location. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-batavia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-at-union-square-create",
+      "title": "Bellhaven at Union Square",
+      "confidence": "High confidence after full account search",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-at-union-square",
+      "evidence": "Full CRM account set searched by name, street variants, city/state/ZIP; no account identifies this physical location. Union Square Senior Living is at 240 Market St; the website facility is at 118 Union Square Dr. Do not re-parent the different-address account.",
+      "proposal": "Create one Active facility under Bellhaven; zero historical revenue and AR. No existing account is modified.",
+      "operations": [
+        {
+          "type": "create",
+          "account": {
+            "name": "Bellhaven at Union Square",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "billing_street": "118 Union Square Dr",
+            "billing_city": "New Albany",
+            "billing_state": "OH",
+            "billing_zip": "43054",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(330) 519-9639",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "note": "Created from current Bellhaven website after checking all existing accounts for this physical location. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-at-union-square"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bellhaven-of-carlisle-create",
+      "title": "Bellhaven of Carlisle",
+      "confidence": "High confidence after full account search",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-carlisle",
+      "evidence": "Full CRM account set searched by name, street variants, city/state/ZIP; no account identifies this physical location. No CRM account exists in the website city/state. New Carlisle, OH is a different facility from Carlisle, PA.",
+      "proposal": "Create one Active facility under Bellhaven; zero historical revenue and AR. No existing account is modified.",
+      "operations": [
+        {
+          "type": "create",
+          "account": {
+            "name": "Bellhaven of Carlisle",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "billing_street": "640 Walnut Bottom Rd",
+            "billing_city": "Carlisle",
+            "billing_state": "PA",
+            "billing_zip": "17015",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(260) 386-7765",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "note": "Created from current Bellhaven website after checking all existing accounts for this physical location. Source: https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-carlisle"
+          }
+        }
+      ]
+    },
+    {
+      "id": "amberly-manor-create",
+      "title": "Amberly Manor",
+      "confidence": "High confidence after full account search",
+      "source": "https://analyst-assessment-production.up.railway.app/communities/amberly-manor",
+      "evidence": "Full CRM account set searched by name, street variants, city/state/ZIP; no account identifies this physical location. The Colorado Springs Amberly Manor has a different state, address and administrator. Preserve the earlier rejected match; create a separate Hudson OH facility.",
+      "proposal": "Create one Active facility under Bellhaven; zero historical revenue and AR. No existing account is modified.",
+      "operations": [
+        {
+          "type": "create",
+          "account": {
+            "name": "Amberly Manor",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "billing_street": "4390 Darrow Rd",
+            "billing_city": "Hudson",
+            "billing_state": "OH",
+            "billing_zip": "44236",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(330) 228-4392",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "note": "Created from current Bellhaven website after checking all existing accounts for this physical location. Source: https://analyst-assessment-production.up.railway.app/communities/amberly-manor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00116ETS45BL7DTQP7",
+      "title": "Bellhaven Care Center of Alliance",
+      "confidence": "Uncertain ownership: conservative CRM flag",
+      "source": "https://analyst-assessment-production.up.railway.app/communities",
+      "evidence": "Absent from all 35 current website communities, including homepage-only Findlay. No reliable public ownership/closure evidence is available in this fictional assessment.",
+      "proposal": "Set status to Needs Review and document the discrepancy. Keep parent, balances, contacts and ownership links unchanged. This resolves the classification without claiming unsupported ownership.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "00116ETS45BL7DTQP7",
+          "before": {
+            "account_id": "00116ETS45BL7DTQP7",
+            "name": "Bellhaven Care Center of Alliance",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "1785 Freshley Ave",
+            "billing_city": "Alliance",
+            "billing_state": "OH",
+            "billing_zip": "44601",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(734) 358-4538",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Needs Review",
+            "note": "Not found in the current Bellhaven website community list after full pagination and homepage-feature review. Ownership/closure unconfirmed; investigate before reparenting or inactivating. Preserve parent and billing history."
+          }
+        }
+      ]
+    },
+    {
+      "id": "0016PVXH4B25HWR7QE",
+      "title": "Bellhaven of Coldwater",
+      "confidence": "Uncertain ownership: conservative CRM flag",
+      "source": "https://analyst-assessment-production.up.railway.app/communities",
+      "evidence": "Absent from all 35 current website communities, including homepage-only Findlay. No reliable public ownership/closure evidence is available in this fictional assessment.",
+      "proposal": "Set status to Needs Review and document the discrepancy. Keep parent, balances, contacts and ownership links unchanged. This resolves the classification without claiming unsupported ownership.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "0016PVXH4B25HWR7QE",
+          "before": {
+            "account_id": "0016PVXH4B25HWR7QE",
+            "name": "Bellhaven of Coldwater",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "90 N Michigan Ave",
+            "billing_city": "Coldwater",
+            "billing_state": "MI",
+            "billing_zip": "49036",
+            "care_type": "Assisted Living",
+            "status": "Active",
+            "phone": "(814) 581-1138",
+            "lifetime_revenue": 0,
+            "outstanding_ar": 0,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Needs Review",
+            "note": "Not found in the current Bellhaven website community list after full pagination and homepage-feature review. Ownership/closure unconfirmed; investigate before reparenting or inactivating. Preserve parent and billing history."
+          }
+        }
+      ]
+    },
+    {
+      "id": "001SXSF4ELF0Z2LGDM",
+      "title": "Bellhaven of Sandusky",
+      "confidence": "Uncertain ownership: conservative CRM flag",
+      "source": "https://analyst-assessment-production.up.railway.app/communities",
+      "evidence": "Absent from all 35 current website communities, including homepage-only Findlay. Millstone Care of Sandusky shares the physical address, suggesting a possible ownership change; this is not confirmed by an operator website. Old account has $130,000 revenue and $5,200 unpaid AR.",
+      "proposal": "Set status to Needs Review and document the discrepancy. Keep parent, balances, contacts and ownership links unchanged. This resolves the classification without claiming unsupported ownership.",
+      "operations": [
+        {
+          "type": "patch",
+          "account_id": "001SXSF4ELF0Z2LGDM",
+          "before": {
+            "account_id": "001SXSF4ELF0Z2LGDM",
+            "name": "Bellhaven of Sandusky",
+            "parent_id": "0015QAPLGS3FVYEEEM",
+            "parent_name": "Bellhaven Senior Living (Parent Account)",
+            "billing_street": "2715 Columbus Ave",
+            "billing_city": "Sandusky",
+            "billing_state": "OH",
+            "billing_zip": "44870",
+            "care_type": "Skilled Nursing",
+            "status": "Active",
+            "phone": "(260) 212-1086",
+            "lifetime_revenue": 130000,
+            "outstanding_ar": 5200,
+            "chow_current_account": "",
+            "duplicate_of_account": "",
+            "note": "",
+            "created_by_candidate": false,
+            "updated_at": "2026-11-05 14:46:22Z"
+          },
+          "changes": {
+            "status": "Needs Review",
+            "note": "Not found in the current Bellhaven website community list after full pagination and homepage-feature review. Ownership/closure unconfirmed; investigate before reparenting or inactivating. Preserve parent and billing history."
+          }
+        }
+      ]
+    }
+  ]
+}
